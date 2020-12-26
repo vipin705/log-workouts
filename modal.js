@@ -36,7 +36,7 @@ export const storeWorkouts = function () {
 };
 
 export const getStoredWorkouts = function () {
-  const data = JSON.parse(localStorage.getItem('workout')).map(workout => {
+  const data = JSON.parse(localStorage.getItem('workout'))?.map(workout => {
     workout.type === 'running'
       ? Object.setPrototypeOf(workout, Running.prototype)
       : Object.setPrototypeOf(workout, Cycling.prototype);

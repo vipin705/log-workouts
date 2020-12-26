@@ -443,12 +443,9 @@ const createWorkoutType = function (coords, type, distance, duration, effort) {
 
 const init = async function () {
   await getCoords();
-
-  if (modal.getStoredWorkouts()) {
-    modal.getStoredWorkouts().forEach(workout => {
-      _mapView.default.renderWorkout(workout);
-    });
-  }
+  modal.getStoredWorkouts().forEach(workout => {
+    _mapView.default.renderWorkout(workout);
+  });
 
   _mapView.default.displayFormOnClick();
 

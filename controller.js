@@ -20,9 +20,11 @@ const createWorkoutType = function (coords, type, distance, duration, effort) {
 
 const init = async function () {
   await getCoords();
-  modal.getStoredWorkouts().forEach(workout => {
-    mapView.renderWorkout(workout);
-  });
+  if (modal.getStoredWorkouts()) {
+    modal.getStoredWorkouts().forEach(workout => {
+      mapView.renderWorkout(workout);
+    });
+  }
   mapView.displayFormOnClick();
   mapView.displayWorkoutOnSubmit(createWorkoutType);
   mapView.toggleEffortOnType();
