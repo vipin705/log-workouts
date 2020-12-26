@@ -1,0 +1,42 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.addWorkoutData = exports.getCurrentUserLocation = void 0;
+
+var _q = require("q");
+
+var _regeneratorRuntime = require("regenerator-runtime");
+
+var _cycling = _interopRequireDefault(require("./Workouts/cycling.js"));
+
+var _running = _interopRequireDefault(require("./Workouts/running.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const workouts = [];
+
+const getCurrentUserLocation = function () {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(position => {
+      const {
+        latitude,
+        longitude
+      } = position.coords;
+      resolve({
+        latitude,
+        longitude
+      });
+    }, reject);
+  });
+};
+
+exports.getCurrentUserLocation = getCurrentUserLocation;
+
+const addWorkoutData = function (coords, type, distance, duration, effort) {
+  const workout = type === 'running' ? new _running.default(coords, distance, duration, effort) : new _cycling.default(coords, distance, duration, effort);
+  console.log(workout.__porto__ == _running.default.prototype);
+};
+
+exports.addWorkoutData = addWorkoutData;

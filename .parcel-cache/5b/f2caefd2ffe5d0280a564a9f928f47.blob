@@ -1,0 +1,25 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getCurrentUserLocation = void 0;
+
+var _regeneratorRuntime = require("regenerator-runtime");
+
+const getCurrentUserLocation = function () {
+  return navigator.geolocation.getCurrentPosition(async cords => {
+    const {
+      latitude,
+      longitude
+    } = cords.coords;
+    return {
+      latitude,
+      longitude
+    };
+  }, err => {
+    console.log(`Could Not Get Location`);
+  });
+};
+
+exports.getCurrentUserLocation = getCurrentUserLocation;

@@ -1,0 +1,51 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _leaflet = _interopRequireDefault(require("leaflet"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+class MapView {
+  constructor() {
+    _defineProperty(this, "_map", void 0);
+
+    _defineProperty(this, "_position", void 0);
+  }
+
+  displayMap(coords) {
+    this._position = coords;
+    const {
+      latitude,
+      longitude
+    } = coords;
+    this._map = _leaflet.default.map('map').setView([latitude, longitude], 10);
+
+    _leaflet.default.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(this._map);
+
+    _leaflet.default.marker([latitude, longitude]).addTo(this._map).bindPopup('A pretty CSS3 popup.<br> Easily customizable.').openPopup();
+  }
+
+  displayMarkerOnClick() {
+    this._map.on('click', e => {
+      const {
+        lat,
+        lng
+      } = e.latlng;
+
+      _leaflet.default.marker([lat, lng]).addTo(this._map);
+    });
+  }
+
+}
+
+var _default = new MapView();
+
+exports.default = _default;

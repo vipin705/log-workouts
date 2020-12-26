@@ -1,0 +1,26 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _workout = _interopRequireDefault(require("./workout"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+class Running extends _workout.default {
+  constructor(coords, distance, duration, cadence) {
+    super(coords, distance, duration);
+    this.cadence = cadence;
+
+    this._calPace();
+  }
+
+  _calPace() {
+    return this.pace = this.duration / this.distance;
+  }
+
+}
+
+exports.default = Running;

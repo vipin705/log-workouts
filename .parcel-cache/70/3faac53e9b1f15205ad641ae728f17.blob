@@ -1,0 +1,113 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _leaflet = _interopRequireDefault(require("leaflet"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+class MapView {
+  constructor() {
+    _defineProperty(this, "_map", void 0);
+
+    _defineProperty(this, "_position", void 0);
+
+    _defineProperty(this, "_containerWorkouts", document.querySelector('.workouts'));
+
+    _defineProperty(this, "_form", document.querySelector('.form'));
+
+    _defineProperty(this, "_inputDistance", document.querySelector('.form__input--distance'));
+
+    _defineProperty(this, "_inputDuration", document.querySelector('.form__input--duration'));
+
+    _defineProperty(this, "_inputCadence", document.querySelector('.form__input--cadence'));
+
+    _defineProperty(this, "_inputElevation", document.querySelector('.form__input--elevation'));
+
+    _defineProperty(this, "_inputType", document.querySelector('.form__input--type'));
+  }
+
+  _clearInputFields() {
+    this._inputType.value = this._inputDistance.value = this._inputDuration.value = this._inputCadence.value = '';
+
+    this._inputDistance.focus();
+  }
+
+  displayMap(coords) {
+    const {
+      latitude,
+      longitude
+    } = coords;
+    this._map = _leaflet.default.map('map').setView([latitude, longitude], 10);
+
+    _leaflet.default.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(this._map);
+  }
+
+  displayFormOnClick() {
+    this._map.on('click', e => {
+      const {
+        lat,
+        lng
+      } = e.latlng;
+      this._position = {
+        lat,
+        lng
+      };
+
+      this._form.classList.remove('hidden');
+
+      this._inputDistance.focus();
+    });
+  }
+
+  displayWorkoutOnSubmit(handler) {
+    this._form.addEventListener('submit', e => {
+      e.preventDefault();
+      const {
+        lat,
+        lng
+      } = this._position;
+      const popUpOptions = {
+        autoClose: false,
+        autoPan: true,
+        className: 'workout--running',
+        closeOnClick: false,
+        maxWidth: 250,
+        maxWidth: 100
+      };
+
+      _leaflet.default.marker([lat, lng]).addTo(this._map).bindPopup(_leaflet.default.popup(popUpOptions).setContent(`running`)).openPopup();
+
+      handler([lat, lng], 'running', 2, 2, 2);
+
+      this._clearInputFields();
+    });
+  }
+
+  toggleEffortOnType() {
+    this._inputType.addEventListener('change', () => {
+      this._inputElevation.closest('.form__row').classList.toggle('form__row--hidden');
+
+      this._inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
+    });
+  }
+
+  _getWorkoutData() {
+    const type = this._inputType.value;
+    const distance = +this._inputDistance.value;
+    const duration = +this._inputDuration.value;
+    return [type, distance, duration, effor];
+  }
+
+}
+
+var _default = new MapView();
+
+exports.default = _default;

@@ -1,0 +1,60 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getStoredWorkouts = exports.storeWorkouts = exports.addWorkoutData = exports.getCurrentUserLocation = exports.workouts = void 0;
+
+var _q = require("q");
+
+var _regeneratorRuntime = require("regenerator-runtime");
+
+var _cycling = _interopRequireDefault(require("./Workouts/cycling.js"));
+
+var _running = _interopRequireDefault(require("./Workouts/running.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const workouts = [];
+exports.workouts = workouts;
+
+const getCurrentUserLocation = function () {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(position => {
+      const {
+        latitude,
+        longitude
+      } = position.coords;
+      resolve({
+        latitude,
+        longitude
+      });
+    }, reject);
+  });
+};
+
+exports.getCurrentUserLocation = getCurrentUserLocation;
+
+const addWorkoutData = function (coords, type, distance, duration, effort) {
+  const newWorkout = type === 'running' ? new _running.default(coords, distance, duration, effort) : new _cycling.default(coords, distance, duration, effort);
+  workouts.push(newWorkout);
+};
+
+exports.addWorkoutData = addWorkoutData;
+
+const storeWorkouts = function () {
+  localStorage.setItem('workout', JSON.stringify(workouts));
+};
+
+exports.storeWorkouts = storeWorkouts;
+
+const getStoredWorkouts = function () {
+  const data = JSON.parse(localStorage.getItem('workout')).map(workout => {
+    console.log(workout.type);
+    workout.type === 'running' ? Object.setPrototypeOf(workout, _running.default.prototype) : Object.setPrototypeOf(workout, _cycling.default.prototype);
+  });
+  console.log(data);
+  return data;
+};
+
+exports.getStoredWorkouts = getStoredWorkouts;

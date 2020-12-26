@@ -1,0 +1,8 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ZOOM_LEVEL = void 0;
+const ZOOM_LEVEL = 10;
+exports.ZOOM_LEVEL = ZOOM_LEVEL;
